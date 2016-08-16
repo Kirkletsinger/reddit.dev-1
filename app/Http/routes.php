@@ -22,3 +22,14 @@ Route::get('/sayhello', function(){
 Route::get('/sayhello/{name?}', function($name = "Arsenal"){
 	return "Hello, $name!";
 });
+
+Route::get('/uppercase/{word}', function ($word) {
+	return strtoupper("$word");
+});
+
+Route::get('/increment/{number}', function ($number)){
+	return $number + 1;
+}
+Route::get('/add/{number1}/{number2}', function ($number1, $number2) {
+	return $number1 + $number2;
+});
