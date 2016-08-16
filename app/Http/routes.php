@@ -24,12 +24,34 @@ Route::get('/sayhello/{name?}', function($name = "Arsenal"){
 });
 
 Route::get('/uppercase/{word}', function ($word) {
-	return strtoupper("$word");
+	$data = [
+		'word' => $word,
+		'upper' => strtoupper($word),
+	];
+	return view('uppercase', $data); 
 });
 
-Route::get('/increment/{number}', function ($number)){
+Route::get('/increment/{number}', function ($number){
 	return $number + 1;
-}
+});
+
 Route::get('/add/{number1}/{number2}', function ($number1, $number2) {
 	return $number1 + $number2;
 });
+
+Route::get('/sayhello/{name}', function($name)
+{
+    return view('my-first-view');
+});
+
+Route::get('/rolldice/{guess}', function($guess)
+{
+	$data = array('number' => mt_rand(1,6), 
+		'guess' => $guess);
+	return view('roll-dice', $data);
+});
+
+
+
+
+
