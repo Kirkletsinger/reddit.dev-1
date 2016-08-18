@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Validator;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Post;
@@ -17,9 +18,11 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = \App\Post::all();
-        //dd($posts);
-        return view('posts.index', ['posts' => $posts]);
+        // $posts = \App\Post::all();
+        // //dd($posts);
+        // return view('posts.index', ['posts' => $posts]);
+        $posts = Post::paginate(4);
+        return view('posts.index')->with(array('posts' => $posts));
     }
 
     /**
@@ -43,6 +46,13 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'title' => 'required|max:100',
+            'url' => 'url|required',
+            'content' => 'required|max:700',
+        ]);
+      
+
         $heyAPost = new \App\Post();
         $heyAPost->title = $request->input('title');
         $heyAPost->url = $request->input('url');
