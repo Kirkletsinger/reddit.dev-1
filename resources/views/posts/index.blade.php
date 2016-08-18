@@ -11,7 +11,9 @@
 	<h3>Context</h3>
 	<div> {{ $post->context }} </div>
 	<br>
+	<h4>Time Stamp</h4>
+		{!! $post->created_at->setTimezone('America/Chicago')->format('l, F jS Y @ h:i:s A'); !!}
 	<div>----</div>
 @endforeach
-
+	{!! $posts->render() !!}
 @stop

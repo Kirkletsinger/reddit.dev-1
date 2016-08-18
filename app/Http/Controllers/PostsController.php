@@ -16,13 +16,14 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // $posts = \App\Post::all();
         // //dd($posts);
         // return view('posts.index', ['posts' => $posts]);
+
         $posts = Post::paginate(4);
-        return view('posts.index')->with(array('posts' => $posts));
+        return view('posts.index')->with(array('posts' => $posts)) ;
     }
 
     /**
@@ -49,7 +50,7 @@ class PostsController extends Controller
         $this->validate($request, [
             'title' => 'required|max:100',
             'url' => 'url|required',
-            'content' => 'required|max:700',
+            'context' => 'required|max:700',
         ]);
       
 
@@ -59,6 +60,7 @@ class PostsController extends Controller
         $heyAPost->context = $request->input('context');
         $heyAPost->created_by = 1;
         $heyAPost->save();
+        $request->session()->flash('message', 'Cool person added');
         return redirect()->action('PostsController@index');
     }
 
@@ -83,8 +85,8 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
-        return "Show a form for editing a specific host";
+        $this->validate($request);
+        //return "Show a form for editing a specific host";
     }
 
     /**
@@ -97,7 +99,14 @@ class PostsController extends Controller
     public function update(Request $request, $id)
     {
         //
-        return "Update a specific post";
+        // $this->validate($request, \App\Post::$rules);
+        // $post = \App\Post::find($id);
+        // $post->title = $request->input('title');
+        // $post->url= $request->input('url');
+        // $post->content  = $request->input('content');
+        // $post->save();
+        // return redirect()->action('PostsController@index');
+    
     }
 
     /**
@@ -109,6 +118,8 @@ class PostsController extends Controller
     public function destroy($id)
     {
         //
+        // $post = \App\Post::find($id);
+        // $post->delete();
         return "Delete a specific post";
     }
 }
