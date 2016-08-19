@@ -8,6 +8,7 @@ use Validator;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Post;
+use Illuminate\Support\Facades\Log;
 
 class PostsController extends Controller
 {
@@ -54,14 +55,16 @@ class PostsController extends Controller
         ]);
       
 
-        $heyAPost = new \App\Post();
+        //Log::info('Passed fields in posts request' $this->request)
+        $heyAPost = Post();
         $heyAPost->title = $request->input('title');
         $heyAPost->url = $request->input('url');
         $heyAPost->context = $request->input('context');
         $heyAPost->created_by = 1;
         $heyAPost->save();
+        Log::info($request->all());
         $request->session()->flash('message', 'Cool person added');
-        return redirect()->action('PostsController@index');
+        return redirect()->action('PostsController@index'); //Log::info (log all info then send to create form)
     }
 
     /**
@@ -72,8 +75,12 @@ class PostsController extends Controller
      */
     public function show($id)
     {
+
         $particularPost = \App\Models\Post::find($particularPost);
-        dd($particularPost);
+        if(!$particularPost){
+            abort(404);
+        }
+        //dd($particularPost);
         return view('posts.show', ['post' => $post]);   
     }
 
@@ -85,7 +92,9 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        $this->validate($request);
+        //$this->validate($request);
+        $post = Post::find($id);
+        return view('posts.edit')->with('post', $post);
         //return "Show a form for editing a specific host";
     }
 
@@ -99,13 +108,14 @@ class PostsController extends Controller
     public function update(Request $request, $id)
     {
         //
-        // $this->validate($request, \App\Post::$rules);
-        // $post = \App\Post::find($id);
-        // $post->title = $request->input('title');
-        // $post->url= $request->input('url');
-        // $post->content  = $request->input('content');
-        // $post->save();
-        // return redirect()->action('PostsController@index');
+        $this->validate($request, Post::$rules);
+        $post = Post::find($id);
+        $post->title = $request->input('title');
+        $post->url = $request->input('url');
+        $post->context  = $request->input('content');
+        $post->save();
+        $request->session()->flash('message', 'Update added');
+        return redirect()->action('PostsController@index');
     
     }
 
@@ -115,11 +125,15 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         //
-        // $post = \App\Post::find($id);
-        // $post->delete();
-        return "Delete a specific post";
+        $post = Post::find($id);
+        $post->delete();
+        if(!$post){
+            abort(404);
+        }
+        $request->session()->flash('message', 'Person Deleted');
+        return redirect()->action('PostsController@index');
     }
 }
