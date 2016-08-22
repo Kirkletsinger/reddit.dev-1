@@ -50,7 +50,7 @@ Route::get('/sayhello/{name}', function($name)
 // });
 
 Route::get('/rolldice/{guess}', 'HomeController@rollDice');
-
+Route::get('/dashboard', 'HomeController@accountView');
 Route::resource('posts', 'PostsController');
 
 Route::get('auth/login', 'Auth\AuthController@getLogin');

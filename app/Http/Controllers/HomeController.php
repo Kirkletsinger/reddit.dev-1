@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Post;
 
 class HomeController extends Controller
 {
@@ -39,5 +41,15 @@ class HomeController extends Controller
         // 'number + 1' => $number + 1
         // ];
         return view('increment')->with('number', $number);
+    }
+
+    public function accountView()
+    {
+        if(!Auth::check()){
+            return redirect()->action('Auth/AuthController@getLogin');
+        } else{
+            $post = Post::all()->random();
+             return view('posts.show', ['particularPost' => $post]); 
+        }
     }
 }
