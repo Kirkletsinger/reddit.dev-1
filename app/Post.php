@@ -3,8 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Model\BaseModel;
 
-class Post extends Model
+class Post extends BaseModel
 {
     //
     public static $rules = [
@@ -12,4 +13,9 @@ class Post extends Model
     		'url' => 'required',
     		'context' => 'required|max:500'
     ];
+
+    public function user()
+    {
+    	return $this->belongsTo('App\User', 'created_by');
+    }
 }

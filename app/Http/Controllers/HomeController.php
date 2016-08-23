@@ -48,7 +48,7 @@ class HomeController extends Controller
         if(!Auth::check()){
             return redirect()->action('Auth/AuthController@getLogin');
         } else{
-            $post = Post::all()->random();
+            $post = Auth::user()->posts;
              return view('posts.show', ['particularPost' => $post]); 
         }
     }

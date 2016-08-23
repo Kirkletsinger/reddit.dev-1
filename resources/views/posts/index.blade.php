@@ -4,6 +4,7 @@
 @section('content')
 	<table>
 		<tr>
+			<th>User Name</th>
 			<th>Title</th>
 			<th>URL</th>
 			<th>Context</th>
@@ -11,6 +12,7 @@
 		</tr>
 			@foreach ($posts as $post)
 			<tr>
+				<td> {{ $post->user->name }}</td>
 				<td> {{ $post->title }} </td>
 				<td> {{ $post->url }} </td>
 				<td> {{ $post->context }} </td>

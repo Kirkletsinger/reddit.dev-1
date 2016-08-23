@@ -9,7 +9,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
@@ -18,26 +17,13 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-        // if (!Auth::check()) {
-        // return redirect()->action('Auth/AuthController@postLogin');
-        // // user is logged in
-        // } else {
-        // return redirect()->action('PostsController@index');
-        // // user not NOT logged in
-        // }
-    }
-
     public function index(Request $request)
     {
         // $posts = \App\Post::all();
         // //dd($posts);
         // return view('posts.index', ['posts' => $posts]);
 
-        $posts = Post::paginate(4);
+        $posts = Post::with('user')->paginate(4);
         return view('posts.index')->with(array('posts' => $posts)) ;
     }
 
@@ -74,7 +60,7 @@ class PostsController extends Controller
         $heyAPost->title = $request->input('title');
         $heyAPost->url = $request->input('url');
         $heyAPost->context = $request->input('context');
-        $heyAPost->created_by = Auth::user()->id;
+        $heyAPost->created_by = 1;
         $heyAPost->save();
         Log::info($request->all());
         $request->session()->flash('message', 'Cool person added');
@@ -90,7 +76,7 @@ class PostsController extends Controller
     public function show($id)
     {
 
-        $particularPost = Post::find($particularPost);
+        $particularPost = \App\Models\Post::find($particularPost);
         if(!$particularPost){
             abort(404);
         }
@@ -126,7 +112,7 @@ class PostsController extends Controller
         $post = Post::find($id);
         $post->title = $request->input('title');
         $post->url = $request->input('url');
-        $post->context  = $request->input('content');
+        $post->context  = $request->input('context');
         $post->save();
         $request->session()->flash('message', 'Update added');
         return redirect()->action('PostsController@index');
@@ -150,6 +136,4 @@ class PostsController extends Controller
         $request->session()->flash('message', 'Person Deleted');
         return redirect()->action('PostsController@index');
     }
-
-
 }
