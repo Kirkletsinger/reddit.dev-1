@@ -46,7 +46,7 @@ class HomeController extends Controller
     public function accountView()
     {
         if(!Auth::check()){
-            return redirect()->action('Auth/AuthController@getLogin');
+            return redirect()->action('Auth\AuthController@getLogin');
         } else{
             $post = Auth::user()->posts;
              return view('posts.show', ['particularPost' => $post]); 

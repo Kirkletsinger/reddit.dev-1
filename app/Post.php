@@ -18,4 +18,9 @@ class Post extends BaseModel
     {
     	return $this->belongsTo('App\User', 'created_by');
     }
+
+    public static function searchPostTitle($searchBy, $searchedTitle)
+    {
+    	return Post::where($searchBy, 'like', '%' . $searchedTitle . '%');
+    }
 }

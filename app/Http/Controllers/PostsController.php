@@ -21,10 +21,14 @@ class PostsController extends Controller
     {
         // $posts = \App\Post::all();
         // //dd($posts);
-        // return view('posts.index', ['posts' => $posts]);
-
-        $posts = Post::with('user')->paginate(4);
-        return view('posts.index')->with(array('posts' => $posts)) ;
+        $searchedTitle = $request->input('searchedOption');
+        if(is_null($searchedTitle)){
+            $posts = Post::with('user')->paginate(8);
+            return view('posts.index')->with(array('posts' => $posts));
+        } else{
+            $posts = Post::searchPostTitle($request['searchBy'], $request['searchedOption'])->paginate(6);
+        }
+        return view('posts.index', ['posts' => $posts]);
     }
 
     /**
