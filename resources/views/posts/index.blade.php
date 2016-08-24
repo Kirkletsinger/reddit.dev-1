@@ -27,15 +27,20 @@
 					<th>Title</th>
 					<th>URL</th>
 					<th>Context</th>
+					<th>Vote</th>
 					<th>Time Stamp</th>
 				</thead>
 				<tbody>
 					@foreach ($posts as $post)
 					<tr>
-						<td> {{ $post->user->name }}</td>
-						<td> {{ $post->title }} </td>
-						<td> {{ $post->url }} </td>
-						<td> {{ $post->context }} </td>
+						<td class"col-md-2"> {{ $post->user->name }}</td>
+						<td class"col-md-2"> {{ $post->title }} </td>
+						<td class"col-md-2"> {{ $post->url }} </td>
+						<td class"col-md-2"> {{ $post->context }} </td>
+						<td class"col-md-1">
+							<a class="vote" data-vote="1" data-post="{{ $post->id }}" href="#">Up</a>
+							<a class="vote" data-vote="0" data-post="{{ $post->id }}" href="#">Down</a>
+						</td>
 						<td>Time Stamp
 							{!! $post->created_at->setTimezone('America/Chicago')->format('l, F jS Y @ h:i:s A'); !!}
 						</td>
@@ -58,5 +63,10 @@
 				</tfoot>
 			</table>
     	</div>
+    	<form method="POST" id="vote_form" action="{{ action('VoteController@store', $post->id) }}">
+			{!! csrf_field() !!}
+		<input type="hidden" id="vote" name="vote" value="" >
+        <input type="hidden" id="post_id" name="post_id" value="">			
+		</form>
 	</div>
 @stop

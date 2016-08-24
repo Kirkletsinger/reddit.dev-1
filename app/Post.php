@@ -19,6 +19,11 @@ class Post extends BaseModel
     	return $this->belongsTo('App\User', 'created_by');
     }
 
+    public function votes()
+    {
+    	return $this->hasMany('App\Vote');
+    }
+
     public static function searchPostTitle($searchBy, $searchedOption)
     {
     	return Post::join('users', 'users.id', '=', 'posts.created_by')
