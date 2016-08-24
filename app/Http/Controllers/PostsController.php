@@ -20,7 +20,7 @@ class PostsController extends Controller
     public function index(Request $request)
     {
         // $posts = \App\Post::all();
-        // //dd($posts);
+        //dd($request);
         $searchedTitle = $request->input('searchedOption');
         if(is_null($searchedTitle)){
             $posts = Post::with('user')->paginate(8);

@@ -19,8 +19,13 @@ class Post extends BaseModel
     	return $this->belongsTo('App\User', 'created_by');
     }
 
-    public static function searchPostTitle($searchBy, $searchedTitle)
+    public static function searchPostTitle($searchBy, $searchedOption)
     {
-    	return Post::where($searchBy, 'like', '%' . $searchedTitle . '%');
+    	return Post::join('users', 'users.id', '=', 'posts.created_by')
+    	->where('users.name', 'LIKE', '%' . $searchedOption . '%')
+    	->orWhere('posts.title', 'LIKE', '%' . $searchedOption . '%')
+    	->orWhere('posts.url', 'LIKE', '%' . $searchedOption . '%')
+    	->orWhere('posts.context', 'LIKE', '%' . $searchedOption . '%');
+    	//return Post::where($searchBy, 'like', '%' . $searchedOption . '%');
     }
 }
