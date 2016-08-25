@@ -24,6 +24,12 @@ class User extends BaseModel implements AuthenticatableContract,
      */
     protected $table = 'users';
 
+    public static $rules = [
+            'name' => 'required|max:100',
+            'email' => 'required',
+            'password' => 'required|max:500|confirmed'
+    ];
+
     /**
      * The attributes that are mass assignable.
      *

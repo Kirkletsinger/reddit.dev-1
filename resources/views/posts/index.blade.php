@@ -30,6 +30,7 @@
 					<th>Vote</th>
 					<th>Time Stamp</th>
 				</thead>
+				<a href="{{ action('ProfileController@create') }}">Create User</a>
 				<tbody>
 					@foreach ($posts as $post)
 					<tr>

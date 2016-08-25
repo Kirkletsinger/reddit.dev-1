@@ -1,9 +1,8 @@
 @extends('layouts.master')
-
 @section('content')
- <form method="POST" action="{{ action('ProfileController@update') }}" class="search-form">
+ <form method="POST" action="{{ action('ProfileController@update', $user->id) }}" class="search-form">
     {!! csrf_field() !!}
-    {{ method_field('PUT') !!}} 
+    {!! method_field('PUT') !!} 
   <div class="control-group">
     	<!-- Username -->
     	<label class="control-label"  for="name">Username</label>
@@ -28,6 +27,7 @@
             <p class="help-block">New Password Please</p>
         </div>
     </div>
+
     <input type="submit">
 </form>
    

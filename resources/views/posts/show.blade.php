@@ -2,7 +2,7 @@
 @section('content')
 	<h3>Welcome to your account : {{ Auth::user()->name }}</h3>
 	<h3>Your email  : {{ Auth::user()->email }}</h3>
-	<a href="{{ action('ProfileController@edit') }}">Edit</a>
+	<a href="{{ action('ProfileController@edit', Auth::id()) }}">Edit</a>
 	<section id="Posts">
 		<div class="row">
 			<div class="col-md-12">
