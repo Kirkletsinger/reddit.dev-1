@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
@@ -52,22 +53,16 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'title' => 'required|max:100',
-            'url' => 'url|required',
-            'context' => 'required|max:700',
-        ]);
-      
-
+        $this->validate($request, Post::$rules);
         //Log::info('Passed fields in posts request' $this->request)
-        $heyAPost = Post();
+        $heyAPost = new Post();
         $heyAPost->title = $request->input('title');
         $heyAPost->url = $request->input('url');
         $heyAPost->context = $request->input('context');
-        $heyAPost->created_by = 1;
+        $heyAPost->created_by = Auth::user()->id;
         $heyAPost->save();
         Log::info($request->all());
-        $request->session()->flash('message', 'Cool person added');
+        $request->session()->flash('message', 'Cool post added');
         return redirect()->action('PostsController@index'); //Log::info (log all info then send to create form)
     }
 
